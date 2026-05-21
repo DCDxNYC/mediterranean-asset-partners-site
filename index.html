@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mediterranean Asset Partners — Cyprus Real Estate on Chain</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  /* =============================================
+     RESET & BASE
+  ============================================= */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold:       #C9A96E;
+    --gold-lt:    #E8D5B0;
+    --gold-dk:    #8B6A35;
+    --ink:        #141210;
+    --ink2:       #1A1714;
+    --ink3:       #221E1A;
+    --stone:      #F5F2ED;
+    --stone2:     #EDE8E0;
+    --muted:      rgba(245,242,237,0.45);
+    --border:     rgba(201,169,110,0.18);
+    --serif:      'Cormorant Garamond', Georgia, serif;
+    --mono:       'DM Mono', 'Courier New', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--stone);
+    font-family: var(--serif);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+  button { cursor: pointer; font-family: inherit; }
+
+  /* =============================================
+     TYPOGRAPHY UTILS
+  ============================================= */
+  .mono {
+    font-family: var(--mono);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.75;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+  .gold { color: var(--gold); }
+  .muted { color: var(--muted); }
+
+  /* =============================================
+     NAV
+  ============================================= */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 4rem;
+    border-bottom: 0.5px solid var(--border);
+    background: rgba(20,18,16,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: padding 0.3s;
+  }
+  nav.scrolled { padding: 1rem 4rem; }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .nav-logo-mark {
+    width: 28px;
+    height: 28px;
+    border: 0.5px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--stone);
+    opacity: 0.5;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; }
+
+  .nav-cta {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: transparent;
+    border: 0.5px solid var(--gold);
+    color: var(--gold);
+    padding: 0.6rem 1.4rem;
+    transition: all 0.25s;
+  }
+  .nav-cta:hover {
+    background: var(--gold);
+    color: var(--ink);
+  }
+
+  /* =============================================
+     HERO
+  ============================================= */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 4rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 75% 40%, rgba(201,169,110,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 70%, rgba(27,74,107,0.08) 0%, transparent 70%);
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(201,169,110,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,169,110,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 880px; }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.8;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 0.5px;
+    background: var(--gold);
+    opacity: 0.5;
+  }
+
+  .hero h1 {
+    font-size: clamp(52px, 7.5vw, 96px);
+    font-weight: 300;
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    margin-bottom: 2rem;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.75;
+    max-width: 520px;
+    margin-bottom: 3rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .btn-primary {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    padding: 1rem 2.25rem;
+    transition: background 0.25s;
+  }
+  .btn-primary:hover { background: var(--gold-lt); }
+  .btn-secondary {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--stone);
+    border: 0.5px solid rgba(245,242,237,0.2);
+    padding: 1rem 2rem;
+    transition: all 0.25s;
+  }
+  .btn-secondary:hover {
+    border-color: rgba(245,242,237,0.5);
+    color: var(--stone);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    right: 4rem;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    opacity: 0.35;
+    animation: scrollPulse 2.5s ease-in-out infinite;
+  }
+  .hero-scroll span {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    writing-mode: vertical-lr;
+  }
+  .hero-scroll-line {
+    width: 0.5px;
+    height: 48px;
+    background: var(--gold);
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.35; transform: translateY(0); }
+    50% { opacity: 0.6; transform: translateY(6px); }
+  }
+
+  /* =============================================
+     STATS BAR
+  ============================================= */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .stat {
+    padding: 2.5rem 4rem;
+    border-right: 0.5px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-size: 38px;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.4rem;
+    line-height: 1;
+  }
+  .stat-num em { font-style: italic; }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--stone);
+    opacity: 0.35;
+  }
+
+  /* =============================================
+     SECTIONS — SHARED
+  ============================================= */
+  section { padding: 7rem 4rem; }
+  .section-header { margin-bottom: 4rem; }
+  .section-title {
+    font-size: clamp(36px, 4.5vw, 58px);
+    font-weight: 300;
+    line-height: 1.07;
+    color: var(--stone);
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* =============================================
+     ASSETS
+  ============================================= */
+  #assets { background: var(--ink2); }
+
+  .assets-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 0.5px solid var(--border);
+  }
+  .asset-card {
+    background: var(--ink2);
+    padding: 3.5rem 3rem;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .asset-card:hover { background: var(--ink3); }
+  .asset-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 2px;
+    height: 100%;
+    background: var(--gold);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .asset-card:hover::before { opacity: 1; }
+
+  .asset-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    opacity: 0.5;
+    margin-bottom: 1.25rem;
+  }
+  .asset-name {
+    font-size: 30px;
+    font-weight: 300;
+    color: var(--stone);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  .asset-desc {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 2rem;
+  }
+  .asset-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .asset-tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border: 0.5px solid rgba(201,169,110,0.35);
+    color: var(--gold);
+    padding: 0.4rem 0.85rem;
+    opacity: 0.8;
+  }
+  .asset-metric {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    gap: 2.5rem;
+  }
+  .metric-item {}
+  .metric-val {
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: -0.01em;
+  }
+  .metric-key {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--stone);
+    opacity: 0.3;
+    margin-top: 0.25rem;
+  }
+
+  /* =============================================
+     HOW IT WORKS
+  ============================================= */
+  #how { background: var(--ink); }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 0.5px solid var(--border);
+    margin-top: 4rem;
+  }
+  .step {
+    background: var(--ink);
+    padding: 2.5rem 2rem;
+    transition: background 0.3s;
+  }
+  .step:hover { background: var(--ink2); }
+  .step-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--gold);
+    opacity: 0.4;
+    margin-bottom: 1.75rem;
+    display: block;
+  }
+  .step-title {
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--stone);
+    margin-bottom: 0.75rem;
+    line-height: 1.25;
+  }
+  .step-body {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+
+  /* =============================================
+     CYPRUS
+  ============================================= */
+  #cyprus { background: var(--ink2); }
+
+  .cyprus-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .cyprus-visual {
+    position: relative;
+    height: 420px;
+    border: 0.5px solid var(--border);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cv-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(201,169,110,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201,169,110,0.05) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+  .cv-watermark {
+    font-size: 80px;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(201,169,110,0.07);
+    letter-spacing: -0.02em;
+    user-select: none;
+    position: relative;
+    z-index: 1;
+  }
+  .cv-badge {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    border: 0.5px solid rgba(201,169,110,0.3);
+    color: var(--gold);
+    padding: 0.4rem 0.85rem;
+    opacity: 0.7;
+    z-index: 2;
+  }
+  .cv-coords {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--gold);
+    opacity: 0.35;
+    letter-spacing: 0.18em;
+    z-index: 2;
+  }
+  /* Location dots */
+  .dot {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0.75;
+    z-index: 3;
+    animation: dotPulse 3s ease-in-out infinite;
+  }
+  .dot::after {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    border: 0.5px solid var(--gold);
+    opacity: 0.25;
+  }
+  .dot:nth-child(2) { animation-delay: 0.5s; }
+  .dot:nth-child(3) { animation-delay: 1s; }
+  @keyframes dotPulse {
+    0%, 100% { opacity: 0.75; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+  .d1 { top: 38%; left: 54%; }
+  .d2 { top: 58%; left: 43%; }
+  .d3 { top: 44%; left: 63%; }
+
+  .advantages { display: flex; flex-direction: column; gap: 0; }
+  .adv {
+    padding: 1.75rem 0;
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+  .adv:first-child { border-top: 0.5px solid var(--border); }
+  .adv-code {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--gold);
+    opacity: 0.45;
+    min-width: 36px;
+    padding-top: 3px;
+  }
+  .adv-title {
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--stone);
+    margin-bottom: 0.4rem;
+  }
+  .adv-body {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* =============================================
+     INVESTOR SECTION
+  ============================================= */
+  #investors { background: var(--ink); }
+
+  .investor-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 0.5px solid var(--border);
+    margin-top: 4rem;
+  }
+  .inv-card {
+    background: var(--ink);
+    padding: 2.5rem 2rem;
+    transition: background 0.3s;
+  }
+  .inv-card:hover { background: var(--ink2); }
+  .inv-icon {
+    font-size: 22px;
+    margin-bottom: 1.25rem;
+    color: var(--gold);
+    opacity: 0.6;
+  }
+  .inv-title {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--stone);
+    margin-bottom: 0.65rem;
+  }
+  .inv-body {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* =============================================
+     CTA
+  ============================================= */
+  #cta {
+    background: var(--ink2);
+    text-align: center;
+    padding: 8rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  #cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(201,169,110,0.05) 0%, transparent 70%);
+  }
+  #cta > * { position: relative; z-index: 1; }
+
+  #cta h2 {
+    font-size: clamp(40px, 5.5vw, 70px);
+    font-weight: 300;
+    line-height: 1.07;
+    margin-bottom: 1.5rem;
+  }
+  #cta h2 em { font-style: italic; color: var(--gold); }
+  #cta p {
+    font-size: 16px;
+    color: var(--muted);
+    margin-bottom: 3rem;
+    line-height: 1.75;
+  }
+
+  .cta-form {
+    display: flex;
+    gap: 1px;
+    max-width: 500px;
+    margin: 0 auto 1.5rem;
+  }
+  .cta-input {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid rgba(201,169,110,0.22);
+    color: var(--stone);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    padding: 1rem 1.25rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .cta-input::placeholder {
+    color: rgba(245,242,237,0.25);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+  }
+  .cta-input:focus { border-color: rgba(201,169,110,0.55); }
+  .cta-submit {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    padding: 1rem 2rem;
+    transition: background 0.25s;
+    white-space: nowrap;
+  }
+  .cta-submit:hover { background: var(--gold-lt); }
+
+  .cta-note {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--stone);
+    opacity: 0.25;
+  }
+
+  /* =============================================
+     FOOTER
+  ============================================= */
+  footer {
+    padding: 2rem 4rem;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .footer-logo {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.5;
+  }
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .footer-links a {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--stone);
+    opacity: 0.25;
+    transition: opacity 0.2s;
+  }
+  .footer-links a:hover { opacity: 0.6; }
+  .footer-legal {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--stone);
+    opacity: 0.2;
+    letter-spacing: 0.12em;
+  }
+
+  /* =============================================
+     ANIMATIONS — PAGE LOAD
+  ============================================= */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .fade-up:nth-child(2) { transition-delay: 0.1s; }
+  .fade-up:nth-child(3) { transition-delay: 0.2s; }
+  .fade-up:nth-child(4) { transition-delay: 0.3s; }
+  .fade-up:nth-child(5) { transition-delay: 0.4s; }
+
+  /* =============================================
+     MOBILE
+  ============================================= */
+  @media (max-width: 900px) {
+    nav { padding: 1.25rem 2rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 2rem; }
+    #hero { padding: 0 2rem 5rem; }
+    .hero h1 { font-size: clamp(42px, 10vw, 64px); }
+    .stats-bar { grid-template-columns: 1fr 1fr; }
+    .stat { padding: 2rem; }
+    .assets-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+    .cyprus-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .investor-grid { grid-template-columns: 1fr; }
+    .cta-form { flex-direction: column; }
+    footer { flex-direction: column; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+  }
+
+  /* =============================================
+     MOBILE NAV MENU
+  ============================================= */
+  .nav-hamburger {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--stone);
+    font-size: 20px;
+    padding: 0.25rem;
+  }
+  @media (max-width: 900px) { .nav-hamburger { display: block; } }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(20,18,16,0.98);
+    z-index: 200;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--stone);
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .mobile-menu a:hover { opacity: 1; }
+  .mobile-close {
+    position: absolute;
+    top: 1.5rem; right: 2rem;
+    background: none;
+    border: none;
+    color: var(--stone);
+    font-size: 28px;
+    opacity: 0.5;
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     NAV
+============================================= -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">M</div>
+    Mediterranean Asset Partners
+  </a>
+  <ul class="nav-links">
+    <li><a href="#assets">Assets</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#cyprus">Cyprus</a></li>
+    <li><a href="#investors">Investors</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Request Access</button>
+  <button class="nav-hamburger" id="menuBtn" aria-label="Open menu">&#9776;</button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="menuClose" aria-label="Close menu">&times;</button>
+  <a href="#assets" onclick="closeMobileMenu()">Assets</a>
+  <a href="#how" onclick="closeMobileMenu()">How It Works</a>
+  <a href="#cyprus" onclick="closeMobileMenu()">Cyprus</a>
+  <a href="#investors" onclick="closeMobileMenu()">Investors</a>
+  <a href="#cta" onclick="closeMobileMenu()">Request Access</a>
+</div>
+
+<!-- =============================================
+     HERO
+============================================= -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Cyprus Real Estate &middot; On-Chain</p>
+    <h1 class="fade-up">
+      Real assets.<br>
+      <em>Real yield.</em><br>
+      On the blockchain.
+    </h1>
+    <p class="hero-sub fade-up">
+      Fractional ownership of institutional-grade Cyprus real estate — structured as blockchain tokens. Yield-bearing residential income and land appreciation assets, accessible to qualified investors worldwide.
+    </p>
+    <div class="hero-actions fade-up">
+      <button class="btn-primary" onclick="document.getElementById('assets').scrollIntoView({behavior:'smooth'})">View Offerings</button>
+      <button class="btn-secondary" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Request Deck &rarr;</button>
+    </div>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">
+    <div class="hero-scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- =============================================
+     STATS BAR
+============================================= -->
+<div class="stats-bar">
+  <div class="stat fade-up">
+    <div class="stat-num">&euro;10M<em>+</em></div>
+    <div class="stat-label">Portfolio Value</div>
+  </div>
+  <div class="stat fade-up">
+    <div class="stat-num">2</div>
+    <div class="stat-label">Asset Classes</div>
+  </div>
+  <div class="stat fade-up">
+    <div class="stat-num">EU</div>
+    <div class="stat-label">Jurisdiction</div>
+  </div>
+  <div class="stat fade-up">
+    <div class="stat-num">ERC-20</div>
+    <div class="stat-label">Token Standard</div>
+  </div>
+</div>
+
+<!-- =============================================
+     ASSETS
+============================================= -->
+<section id="assets">
+  <div class="section-header fade-up">
+    <span class="tag">The Portfolio</span>
+    <h2 class="section-title">Two distinct<br><em>asset structures</em></h2>
+  </div>
+  <div class="assets-grid">
+    <div class="asset-card fade-up">
+      <div class="asset-num">01 &mdash; Yield Token</div>
+      <div class="asset-name">Cyprus Residential Income Fund</div>
+      <div class="asset-desc">
+        Tokenized income-generating residential buildings with active tenants across Cyprus. Rental yield is collected at the SPV level and distributed to token holders on a quarterly basis. Fully EU-compliant structure with CySEC oversight.
+      </div>
+      <div class="asset-tags">
+        <span class="asset-tag">Rental Yield</span>
+        <span class="asset-tag">Quarterly Distributions</span>
+        <span class="asset-tag">EU SPV</span>
+        <span class="asset-tag">Residential</span>
+      </div>
+      <div class="asset-metric">
+        <div class="metric-item">
+          <div class="metric-val">Quarterly</div>
+          <div class="metric-key">Distribution Freq.</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-val">&euro;50k</div>
+          <div class="metric-key">Min. Ticket</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-val">ERC-20</div>
+          <div class="metric-key">Token Standard</div>
+        </div>
+      </div>
+    </div>
+    <div class="asset-card fade-up">
+      <div class="asset-num">02 &mdash; Equity Token</div>
+      <div class="asset-name">Cyprus Land Holdings</div>
+      <div class="asset-desc">
+        Fractional ownership of undeveloped and development-ready land plots across Cyprus. A pure appreciation play with a defined liquidity event upon sale or development commencement. Longer time horizon, higher upside potential.
+      </div>
+      <div class="asset-tags">
+        <span class="asset-tag">Land Appreciation</span>
+        <span class="asset-tag">Development Upside</span>
+        <span class="asset-tag">Fractional</span>
+        <span class="asset-tag">EU Title</span>
+      </div>
+      <div class="asset-metric">
+        <div class="metric-item">
+          <div class="metric-val">Sale / Dev</div>
+          <div class="metric-key">Liquidity Event</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-val">&euro;50k</div>
+          <div class="metric-key">Min. Ticket</div>
+        </div>
+        <div class="metric-item">
+          <div class="metric-val">ERC-20</div>
+          <div class="metric-key">Token Standard</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     HOW IT WORKS
+============================================= -->
+<section id="how">
+  <div class="section-header fade-up">
+    <span class="tag">The Structure</span>
+    <h2 class="section-title">How <em>ownership</em><br>works on-chain</h2>
+  </div>
+  <div class="steps-grid">
+    <div class="step fade-up">
+      <span class="step-num">01</span>
+      <div class="step-title">Legal Wrapper</div>
+      <div class="step-body">Property is placed into a Cyprus Special Purpose Vehicle (SPV). The SPV holds legal title. Token holders own equity or income rights within the SPV — not the land directly.</div>
+    </div>
+    <div class="step fade-up">
+      <span class="step-num">02</span>
+      <div class="step-title">Token Issuance</div>
+      <div class="step-body">Smart contracts mint ERC-20 tokens against the SPV on issuance. Each token is a digital representation of your ownership stake, transferable and tradeable between whitelisted wallets.</div>
+    </div>
+    <div class="step fade-up">
+      <span class="step-num">03</span>
+      <div class="step-title">KYC &amp; Compliance</div>
+      <div class="step-body">All investors complete KYC/AML verification. Token transfers are restricted to verified, whitelisted addresses — maintaining CySEC and EU regulatory compliance at all times.</div>
+    </div>
+    <div class="step fade-up">
+      <span class="step-num">04</span>
+      <div class="step-title">Yield Distributions</div>
+      <div class="step-body">Rental income flows from tenants &rarr; SPV &rarr; smart contract &rarr; token holder wallets. Fully transparent, auditable on-chain. No intermediaries. No opacity.</div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     CYPRUS
+============================================= -->
+<section id="cyprus">
+  <div class="cyprus-layout">
+    <div class="cyprus-visual">
+      <div class="cv-grid"></div>
+      <div class="cv-watermark">Cyprus</div>
+      <div class="dot d1"></div>
+      <div class="dot d2"></div>
+      <div class="dot d3"></div>
+      <div class="cv-badge">EU Member State</div>
+      <div class="cv-coords">34.9&deg;N &middot; 33.1&deg;E</div>
+    </div>
+    <div>
+      <span class="tag">Why Cyprus</span>
+      <h2 class="section-title" style="margin-bottom:2.5rem">A jurisdiction<br>built for <em>capital</em></h2>
+      <div class="advantages">
+        <div class="adv fade-up">
+          <div class="adv-code">EU</div>
+          <div>
+            <div class="adv-title">Full EU Membership</div>
+            <div class="adv-body">Property rights governed under European law. Investor protections backed by EU frameworks, MiFID regulation, and an independent judiciary with English common law roots.</div>
+          </div>
+        </div>
+        <div class="adv fade-up">
+          <div class="adv-code">TAX</div>
+          <div>
+            <div class="adv-title">Low Tax Environment</div>
+            <div class="adv-body">12.5% corporate tax rate — one of the lowest in the EU. Extensive double tax treaty network covering 65+ countries. No inheritance tax. No capital gains on securities.</div>
+          </div>
+        </div>
+        <div class="adv fade-up">
+          <div class="adv-code">GEO</div>
+          <div>
+            <div class="adv-title">Strategic Location</div>
+            <div class="adv-body">Natural bridge between European, MENA, and Eastern Mediterranean capital flows. A proven jurisdiction for cross-border structuring and international investment vehicles.</div>
+          </div>
+        </div>
+        <div class="adv fade-up">
+          <div class="adv-code">RWA</div>
+          <div>
+            <div class="adv-title">RWA-Ready Regulation</div>
+            <div class="adv-body">CySEC is among the most progressive EU regulators on digital assets. Cyprus provides a clear legal pathway for tokenized real estate under existing securities frameworks.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     INVESTORS
+============================================= -->
+<section id="investors">
+  <div class="section-header fade-up">
+    <span class="tag">Who This Is For</span>
+    <h2 class="section-title">Built for <em>serious</em><br>capital allocators</h2>
+  </div>
+  <div class="investor-grid">
+    <div class="inv-card fade-up">
+      <div class="inv-icon">&#9670;</div>
+      <div class="inv-title">Family Offices</div>
+      <div class="inv-body">Real yield from EU-regulated real estate with blockchain-native liquidity and reporting. Diversification into the Mediterranean without direct property management.</div>
+    </div>
+    <div class="inv-card fade-up">
+      <div class="inv-icon">&#9670;</div>
+      <div class="inv-title">Crypto Funds</div>
+      <div class="inv-body">On-chain exposure to a real-world yielding asset with clear legal title. Balance sheet diversification with EU regulatory clarity. Token-native structure throughout.</div>
+    </div>
+    <div class="inv-card fade-up">
+      <div class="inv-icon">&#9670;</div>
+      <div class="inv-title">MENA &amp; EU Investors</div>
+      <div class="inv-body">Cyprus as a proven bridge jurisdiction for MENA capital into EU-regulated assets. Full EU investor protections with favorable tax structuring for international capital.</div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     CTA
+============================================= -->
+<section id="cta">
+  <h2 class="fade-up">Access the<br><em>offering documents</em></h2>
+  <p class="fade-up">Qualified investors only. Minimum ticket &euro;50,000.<br>EU and international accredited investors welcome.</p>
+  <form class="cta-form fade-up" onsubmit="handleSubmit(event)">
+    <input class="cta-input" type="email" id="emailInput" placeholder="your@email.com" required />
+    <button type="submit" class="cta-submit">Request Access</button>
+  </form>
+  <p class="cta-note fade-up">Private placement &middot; Not a public offering &middot; Capital at risk</p>
+  <p id="form-msg" style="margin-top:1rem;font-family:var(--mono);font-size:11px;color:var(--gold);opacity:0;transition:opacity 0.4s;letter-spacing:0.15em;"></p>
+</section>
+
+<!-- =============================================
+     FOOTER
+============================================= -->
+<footer>
+  <div class="footer-logo">Mediterranean Asset Partners &copy; 2025</div>
+  <ul class="footer-links">
+    <li><a href="#">Privacy</a></li>
+    <li><a href="#">Terms</a></li>
+    <li><a href="#">Disclosures</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <div class="footer-legal">Cyprus &middot; Private Placement &middot; Not a Public Offering</div>
+</footer>
+
+<!-- =============================================
+     JAVASCRIPT
+============================================= -->
+<script>
+  /* --- Nav scroll shrink --- */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  /* --- Mobile menu --- */
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const menuClose = document.getElementById('menuClose');
+
+  menuBtn.addEventListener('click', () => mobileMenu.classList.add('open'));
+  menuClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+
+  function closeMobileMenu() {
+    mobileMenu.classList.remove('open');
+  }
+
+  /* --- Intersection Observer: fade-up --- */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  /* --- Form submit --- */
+  function handleSubmit(e) {
+    e.preventDefault();
+    const email = document.getElementById('emailInput').value;
+    const msg = document.getElementById('form-msg');
+    msg.textContent = 'Thank you — we will be in touch shortly.';
+    msg.style.opacity = '1';
+    document.getElementById('emailInput').value = '';
+    setTimeout(() => { msg.style.opacity = '0'; }, 5000);
+  }
+
+  /* --- Active nav link highlight on scroll --- */
+  const sections = document.querySelectorAll('section[id], div[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 120;
+      if (window.scrollY >= sectionTop) {
+        current = section.getAttribute('id');
+      }
+    });
+    navLinks.forEach(link => {
+      link.style.opacity = link.getAttribute('href') === '#' + current ? '1' : '0.5';
+    });
+  });
+</script>
+
+</body>
+</html>
